@@ -1,6 +1,8 @@
 import typing
+
 from api.entities.movie import Movie
-from api.repository.movie.abstractions import MovieRepository, RepositoryException
+from api.repository.movie.abstractions import (MovieRepository,
+                                               RepositoryException)
 
 
 class MemoryMovieRepository(MovieRepository):
@@ -25,9 +27,10 @@ class MemoryMovieRepository(MovieRepository):
                     raise RepositoryException("can't update movie id")
                 # Ensure that user doesn't add keys that don't exist on movie entity.
                 if hasattr(movie, key):
-                    movie[key] = value
+                    setattr(movie, f"_{key}", value)
             self._storage[movie_id] = movie
-        raise RepositoryException(f"movie {movie_id} not found")
+        else:
+            raise RepositoryException(f"movie {movie_id} not found")
 
     def delete(self, movie_id: str):
         self._storage.pop(movie_id, None)
