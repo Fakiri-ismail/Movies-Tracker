@@ -11,9 +11,9 @@ class MongoMovieRepository(MovieRepository):
     MemoryMovieRepository implements the reposetory pattern by using MongoDB.
     """
 
-    def __init__(self, connection_string: str = "mongodb://localhost:27017"):
+    def __init__(self, database: str = "movie_track_db", connection_string: str = "mongodb://localhost:27017"):
         self._client = motor.motor_asyncio.AsyncIOMotorClient(connection_string)
-        self._database = self._client["movie_track_db"]
+        self._database = self._client[database]
         # Movie Collection
         self._movies = self._database["movies"]
 
@@ -29,7 +29,7 @@ class MongoMovieRepository(MovieRepository):
     async def get_by_title(self, title: str) -> typing.List[Movie]:
         movie_list: typing.List[Movie] = []
         documents_cursor = self._movies.find({"title": title})
-        for document in documents_cursor:
+        async for document in documents_cursor:
             movie_list.append(Movie(**document))
         return movie_list
 
