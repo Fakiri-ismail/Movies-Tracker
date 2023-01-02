@@ -11,7 +11,11 @@ class MongoMovieRepository(MovieRepository):
     MemoryMovieRepository implements the reposetory pattern by using MongoDB.
     """
 
-    def __init__(self, database: str = "movie_track_db", connection_string: str = "mongodb://localhost:27017"):
+    def __init__(
+        self,
+        database: str = "movie_track_db",
+        connection_string: str = "mongodb://localhost:27017",
+    ):
         self._client = motor.motor_asyncio.AsyncIOMotorClient(connection_string)
         self._database = self._client[database]
         # Movie Collection
