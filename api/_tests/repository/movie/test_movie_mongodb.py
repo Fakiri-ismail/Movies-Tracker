@@ -18,10 +18,11 @@ def movie():
         watched=True,
     )
 
+
 @pytest.fixture(scope="module")
 def database():
-    return MongoMovieRepository(database='test_movie_db')
-    
+    return MongoMovieRepository(database="test_movie_db")
+
 
 @pytest.mark.asyncio
 async def test_create(database, movie):
@@ -44,16 +45,21 @@ async def test_get_by_title(database, movie):
     assert await database.get_by_title(movie.title) == [movie]
     await database.delete(movie.id)
 
-@pytest.mark.asyncio
-async def test_update(movie_1):
-    pass
-
 
 @pytest.mark.asyncio
-async def test_update_fail(movie_1):
-    pass
+async def test_update(database, movie):
+    await database.create(movie)
+    await database.update(
+        movie_id="movie1", update_param={"year": 2023, "watched": False}
+    )
+    mv = await database.get_by_id("movie1")
+    assert mv.year == 2023
+    assert mv.watched == False
+    await database.delete(movie.id)
 
 
 @pytest.mark.asyncio
-async def test_delete(movie_1):
-    pass
+async def test_delete(database, movie):
+    await database.create(movie)
+    await database.delete(movie.id)
+    assert await database.get_by_id("movie1") is None
