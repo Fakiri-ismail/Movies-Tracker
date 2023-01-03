@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from api.handlers.demo import router
+from api.handlers.movie import router
 
 
 def creat_app():
