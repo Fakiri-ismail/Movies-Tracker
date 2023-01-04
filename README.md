@@ -2,6 +2,8 @@
 
 ### Command Line
 - docker exec -it [mongo image name] mongosh
+- make fmt [to format code]
+- sudo kill -9 $(sudo lsof -t -i:8000)
 
 ### Documentation
 - [FastAPI](https://fastapi.tiangolo.com/)
