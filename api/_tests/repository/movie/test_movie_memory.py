@@ -4,6 +4,7 @@ from api.entities.movie import Movie
 from api.repository.movie.abstractions import RepositoryException
 from api.repository.movie.movie_memory import MemoryMovieRepository
 
+
 @pytest.fixture()
 def repo():
     return MemoryMovieRepository()
