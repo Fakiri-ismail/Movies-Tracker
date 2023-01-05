@@ -1,4 +1,5 @@
 from pydantic import BaseSettings, Field
+from functools import lru_cache
 
 
 class Settings(BaseSettings):
@@ -13,3 +14,11 @@ class Settings(BaseSettings):
         title="MongoDB Movies Database Name",
         env="MONGODB_DATABASE_NAME",
     )
+
+
+@lru_cache()
+def settings_instance():
+    """
+    Settings instance to used as a FastAPI dependency.
+    """
+    return Settings()

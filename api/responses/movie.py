@@ -1,5 +1,16 @@
 from pydantic import BaseModel
 
 
+class DetailResponse(BaseModel):
+    message: str
+
+
 class MovieCreatedResponse(BaseModel):
-    movie_id: str
+    _id: str
+
+
+class MovieResponse(MovieCreatedResponse):
+    title: str
+    description: str
+    year: int
+    watched: bool
