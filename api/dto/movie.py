@@ -1,3 +1,5 @@
+import typing
+
 from pydantic import BaseModel, validator
 
 
@@ -28,3 +30,11 @@ class CreateMovieBody(BaseModel):
         if v <= 1900:
             raise ValueError("The year must be greater than 1900")
         return v
+
+
+class UpdateMovieBody(BaseModel):
+
+    title: typing.Union[str, None] = None
+    description: typing.Union[str, None] = None
+    year: typing.Union[int, None] = None
+    watched: typing.Union[bool, None] = False

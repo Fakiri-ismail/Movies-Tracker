@@ -1,12 +1,13 @@
 import typing
 import uuid
 from functools import lru_cache
+from pickle import TRUE
 
-from fastapi import APIRouter, Body, Depends, Query
+from fastapi import APIRouter, Body, Depends, Path, Query
 
-from api.dto.movie import CreateMovieBody
+from api.dto.movie import CreateMovieBody, UpdateMovieBody
 from api.entities.movie import Movie
-from api.repository.abstractions import MovieRepository
+from api.repository.abstractions import MovieRepository, RepositoryException
 from api.repository.movie_mongodb import MongoMovieRepository
 from api.responses.movie import (DetailResponse, MovieCreatedResponse,
                                  MovieResponse)
@@ -37,7 +38,7 @@ def movie_database(settings: Settings = Depends(settings_instance)):
 @router.post("/", status_code=201, response_model=MovieCreatedResponse)
 async def post_create_movie(
     movie: CreateMovieBody = Body(
-        ..., title="Movie name", description="The movie details"
+        ..., title="Create Body", description="The movie details"
     ),
     db: MovieRepository = Depends(movie_database),
 ):
@@ -83,6 +84,22 @@ async def get_movie_by_title(
     return movies_return_value
 
 
-@router.patch("/{movie_id}")
-async def patch_update_movie():
-    pass
+@router.patch(
+    "/{movie_id}",
+    responses={200: {"model": DetailResponse}, 404: {"model": DetailResponse}},
+)
+async def patch_update_movie(
+    movie_id: str = Path(..., title="Movie ID", description="ID of the movie."),
+    update_param: UpdateMovieBody = Body(
+        ..., title="Update Body", description="Parameters of the movie to be updated."
+    ),
+    db: MovieRepository = Depends(movie_database),
+):
+    try:
+        await db.update(
+            movie_id=movie_id,
+            update_param=update_param.dict(exclude_unset=True, exclude_none=True),
+        )
+        return DetailResponse(message = f"Movie with id = {movie_id} has updated.")
+    except RepositoryException as e:
+        return DetailResponse(message=str(e))
