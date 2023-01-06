@@ -3,7 +3,7 @@ import typing
 import motor.motor_asyncio
 
 from api.entities.movie import Movie
-from api.repository.movie.abstractions import MovieRepository, RepositoryException
+from api.repository.abstractions import MovieRepository, RepositoryException
 
 
 class MongoMovieRepository(MovieRepository):

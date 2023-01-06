@@ -5,8 +5,8 @@ import uuid
 from fastapi import APIRouter, Body, Depends, Query
 from api.dto.movie import CreateMovieBody
 from api.entities.movie import Movie
-from api.repository.movie.abstractions import MovieRepository
-from api.repository.movie.movie_mongodb import MongoMovieRepository
+from api.repository.abstractions import MovieRepository
+from api.repository.movie_mongodb import MongoMovieRepository
 
 from api.responses.movie import DetailResponse, MovieCreatedResponse, MovieResponse
 from api.settings import Settings, settings_instance
@@ -81,3 +81,8 @@ async def get_movie_by_title(
     for movie in movies:
         movies_return_value.append(MovieResponse(**movie.to_dict()))
     return movies_return_value
+
+
+@router.patch("/{movie_id}")
+async def patch_update_movie():
+    pass
