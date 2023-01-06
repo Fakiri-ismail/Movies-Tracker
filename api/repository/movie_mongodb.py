@@ -30,9 +30,11 @@ class MongoMovieRepository(MovieRepository):
             return Movie(**document)
         return None
 
-    async def get_by_title(self, title: str) -> typing.List[Movie]:
+    async def get_by_title(
+        self, title: str, skip: int = 0, limit: int = 1000
+    ) -> typing.List[Movie]:
         movie_list: typing.List[Movie] = []
-        documents_cursor = self._movies.find({"title": title})
+        documents_cursor = self._movies.find({"title": title}).skip(skip).limit(limit)
         async for document in documents_cursor:
             movie_list.append(Movie(**document))
         return movie_list

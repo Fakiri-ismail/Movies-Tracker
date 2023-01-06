@@ -1,5 +1,6 @@
 import typing
 import uuid
+from collections import namedtuple
 from functools import lru_cache
 
 from fastapi import APIRouter, Body, Depends, Path, Query, Response
@@ -32,6 +33,11 @@ def movie_database(settings: Settings = Depends(settings_instance)):
         return _make_movie_database(settings)
 
     return cache()
+
+
+def pagination_params(skip: int = Query(0, ge=0), limit: int = Query(1000, le=1000)):
+    Pagination = namedtuple("Pagination", ["skip", "limit"])
+    return Pagination(skip=skip, limit=limit)
 
 
 @router.post("/", status_code=201, response_model=MovieCreatedResponse)
@@ -74,9 +80,12 @@ async def get_movie_by_title(
     title: str = Query(
         ..., title="Title", description="The title of movie", min_length=3
     ),
+    pagination=Depends(pagination_params),
     db: MovieRepository = Depends(movie_database),
 ):
-    movies = await db.get_by_title(title=title)
+    movies = await db.get_by_title(
+        title=title, skip=pagination.skip, limit=pagination.limit
+    )
     movies_return_value = []
     for movie in movies:
         movies_return_value.append(MovieResponse(**movie.to_dict()))

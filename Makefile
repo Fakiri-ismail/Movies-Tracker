@@ -1,4 +1,4 @@
-fmt:
+format:
 	black .
 	isort -rc .
 	autoflake .
