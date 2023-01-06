@@ -1,16 +1,16 @@
-from email.charset import QP
-from functools import lru_cache
 import typing
 import uuid
+from functools import lru_cache
+
 from fastapi import APIRouter, Body, Depends, Query
+
 from api.dto.movie import CreateMovieBody
 from api.entities.movie import Movie
 from api.repository.abstractions import MovieRepository
 from api.repository.movie_mongodb import MongoMovieRepository
-
-from api.responses.movie import DetailResponse, MovieCreatedResponse, MovieResponse
+from api.responses.movie import (DetailResponse, MovieCreatedResponse,
+                                 MovieResponse)
 from api.settings import Settings, settings_instance
-
 
 router = APIRouter(prefix="/api/v1/movies", tags=["movies"])
 

@@ -1,10 +1,6 @@
-import asyncio
-from asyncore import loop
-import secrets
 import pytest
 
 from api.entities.movie import Movie
-from api.repository.abstractions import RepositoryException
 from api.repository.movie_mongodb import MongoMovieRepository
 
 
