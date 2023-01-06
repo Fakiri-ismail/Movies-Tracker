@@ -1,9 +1,8 @@
 import typing
 import uuid
 from functools import lru_cache
-from pickle import TRUE
 
-from fastapi import APIRouter, Body, Depends, Path, Query
+from fastapi import APIRouter, Body, Depends, Path, Query, Response
 
 from api.dto.movie import CreateMovieBody, UpdateMovieBody
 from api.entities.movie import Movie
@@ -66,7 +65,7 @@ async def post_create_movie(
 async def get_movie_by_id(movie_id: str, db: MovieRepository = Depends(movie_database)):
     movie = await db.get_by_id(movie_id)
     if not movie:
-        return DetailResponse(message=f"Movie with id = {movie_id} is not found.")
+        return DetailResponse(message=f"Movie with [id = {movie_id}] is not found.")
     return MovieResponse(**movie.to_dict())
 
 
@@ -100,6 +99,14 @@ async def patch_update_movie(
             movie_id=movie_id,
             update_param=update_param.dict(exclude_unset=True, exclude_none=True),
         )
-        return DetailResponse(message = f"Movie with id = {movie_id} has updated.")
+        return DetailResponse(message=f"Movie updated.")
     except RepositoryException as e:
         return DetailResponse(message=str(e))
+
+
+@router.delete("/{movie_id}", status_code=204)
+async def patch_update_movie(
+    movie_id: str, db: MovieRepository = Depends(movie_database)
+):
+    await db.delete(movie_id=movie_id)
+    return Response(status_code=204)
