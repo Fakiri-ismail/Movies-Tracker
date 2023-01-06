@@ -1,8 +1,8 @@
 import pytest
 
 from api.entities.movie import Movie
-from api.repository.movie.abstractions import RepositoryException
-from api.repository.movie.movie_memory import MemoryMovieRepository
+from api.repository.abstractions import RepositoryException
+from api.repository.movie_memory import MemoryMovieRepository
 
 
 @pytest.fixture()

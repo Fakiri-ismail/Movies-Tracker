@@ -4,8 +4,8 @@ import secrets
 import pytest
 
 from api.entities.movie import Movie
-from api.repository.movie.abstractions import RepositoryException
-from api.repository.movie.movie_mongodb import MongoMovieRepository
+from api.repository.abstractions import RepositoryException
+from api.repository.movie_mongodb import MongoMovieRepository
 
 
 @pytest.fixture(scope="module")
