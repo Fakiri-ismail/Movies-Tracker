@@ -8,7 +8,7 @@ from api.settings import Settings, settings_instance
 
 
 class CustomHeaderMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app, test_option: bool = False) -> None:
+    def __init__(self, app, test_option: bool = False):
         super().__init__(app)
         self._test_option = test_option
 
@@ -19,7 +19,7 @@ class CustomHeaderMiddleware(BaseHTTPMiddleware):
 
 
 class PrometheusMiddleware:
-    def __init__(self, app: FastAPI) -> None:
+    def __init__(self, app: FastAPI):
         logger = getLogger("api.PrometheusMiddleware")
         settings: Settings = settings_instance()
         if settings.enable_metrics:

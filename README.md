@@ -10,3 +10,4 @@
 - [Motor](https://motor.readthedocs.io/en/stable/index.html) : Asynchronous Python driver for MongoDB
 - [Pydantic](https://docs.pydantic.dev/)
 - [FastAPI Testing](https://fastapi.tiangolo.com/advanced/testing-dependencies/)
+- [Starlette](https://www.starlette.io/)

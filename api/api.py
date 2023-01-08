@@ -2,13 +2,13 @@ from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
 from api.handlers.movie import router
-from api.middleware import PrometheusMiddleware
+from api.middleware import CustomHeaderMiddleware, PrometheusMiddleware
 
 
 def creat_app():
     app = FastAPI(docs_url="/")
 
-    # Middleware
+    # CORS Middleware
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -17,6 +17,10 @@ def creat_app():
         allow_headers=["*"],
     )
 
+    # Custom Middleware
+    app.add_middleware(CustomHeaderMiddleware, test_option=True)
+
+    # Prometheus Middleware
     PrometheusMiddleware(app)
 
     # Router

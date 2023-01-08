@@ -4,10 +4,10 @@ import pytest
 from starlette.testclient import TestClient
 
 from api.api import creat_app
-from api.settings import Settings, settings_instance
 from api.entities.movie import Movie
 from api.handlers.movie import movie_database
 from api.repository.movie_memory import MemoryMovieRepository
+from api.settings import Settings, settings_instance
 
 
 def memory_repository_dependency(dependency):
