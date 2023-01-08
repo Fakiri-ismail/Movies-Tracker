@@ -4,6 +4,7 @@ import pytest
 from starlette.testclient import TestClient
 
 from api.api import creat_app
+from api.settings import Settings, settings_instance
 from api.entities.movie import Movie
 from api.handlers.movie import movie_database
 from api.repository.movie_memory import MemoryMovieRepository
@@ -15,6 +16,8 @@ def memory_repository_dependency(dependency):
 
 @pytest.fixture()
 def client():
+    settings: Settings = settings_instance()
+    settings.enable_metrics = False
     return TestClient(app=creat_app())
 
 

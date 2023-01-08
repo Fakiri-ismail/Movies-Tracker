@@ -4,6 +4,14 @@ from pydantic import BaseSettings, Field
 
 
 class Settings(BaseSettings):
+    # General Settings
+    enable_metrics: bool = Field(
+        True,
+        title="Enable Metrics",
+        description="Expose prometheus metrics if set to True (Default: True)",
+        env="ENABLE_METRICS",
+    )
+
     # MongoDB Settings
     mongo_connection_string: str = Field(
         "mongodb://localhost:27017",
