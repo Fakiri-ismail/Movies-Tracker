@@ -7,6 +7,7 @@ from fastapi import APIRouter, Body, Depends, Path, Query, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
+from api.authentication import basic_authentication
 from api.dto.movie import CreateMovieBody, UpdateMovieBody
 from api.entities.movie import Movie
 from api.repository.abstractions import MovieRepository, RepositoryException
@@ -15,7 +16,12 @@ from api.responses.movie import (DetailResponse, MovieCreatedResponse,
                                  MovieResponse)
 from api.settings import Settings, settings_instance
 
-router = APIRouter(prefix="/api/v1/movies", tags=["movies"])
+router = APIRouter(
+    prefix="/api/v1/movies",
+    tags=["movies"],
+    # Authentication
+    dependencies=[Depends(basic_authentication)],
+)
 
 
 def _make_movie_database(settings: Settings) -> MovieRepository:
@@ -44,9 +50,7 @@ def pagination_params(skip: int = Query(0, ge=0), limit: int = Query(1000, le=10
 
 @router.post("/", status_code=201, response_model=MovieCreatedResponse)
 async def post_create_movie(
-    movie: CreateMovieBody = Body(
-        ..., title="Create Body", description="The movie details"
-    ),
+    movie: CreateMovieBody = Body(..., title="Create Body"),
     db: MovieRepository = Depends(movie_database),
 ):
     """
@@ -70,7 +74,11 @@ async def post_create_movie(
     "/{movie_id}",
     responses={200: {"model": MovieResponse}, 404: {"model": DetailResponse}},
 )
-async def get_movie_by_id(movie_id: str, db: MovieRepository = Depends(movie_database)):
+async def get_movie_by_id(
+    movie_id: str,
+    db: MovieRepository = Depends(movie_database),
+    _=Depends(basic_authentication),
+):
     movie = await db.get_by_id(movie_id)
     if not movie:
         return JSONResponse(
@@ -84,9 +92,7 @@ async def get_movie_by_id(movie_id: str, db: MovieRepository = Depends(movie_dat
 
 @router.get("/", response_model=typing.List[MovieResponse])
 async def get_movie_by_title(
-    title: str = Query(
-        ..., title="Title", description="The title of movie", min_length=3
-    ),
+    title: str = Query(..., title="Movie Title", min_length=3),
     pagination=Depends(pagination_params),
     db: MovieRepository = Depends(movie_database),
 ):
@@ -105,9 +111,7 @@ async def get_movie_by_title(
 )
 async def patch_update_movie(
     movie_id: str = Path(..., title="Movie ID", description="ID of the movie."),
-    update_param: UpdateMovieBody = Body(
-        ..., title="Update Body", description="Parameters of the movie to be updated."
-    ),
+    update_param: UpdateMovieBody = Body(..., title="Update Body"),
     db: MovieRepository = Depends(movie_database),
 ):
     try:
