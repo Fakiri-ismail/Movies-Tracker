@@ -11,3 +11,4 @@
 - [Pydantic](https://docs.pydantic.dev/)
 - [FastAPI Testing](https://fastapi.tiangolo.com/advanced/testing-dependencies/)
 - [Starlette](https://www.starlette.io/)
+- [JSON WEB TOKENS (JWT)](https://jwt.io/introduction)

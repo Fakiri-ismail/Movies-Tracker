@@ -7,7 +7,7 @@ from fastapi import APIRouter, Body, Depends, Path, Query, Response
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 
-from api.authentication import basic_authentication
+from api.authentication import Token, basic_authentication, jwt_authentication
 from api.dto.movie import CreateMovieBody, UpdateMovieBody
 from api.entities.movie import Movie
 from api.repository.abstractions import MovieRepository, RepositoryException
@@ -20,7 +20,7 @@ router = APIRouter(
     prefix="/api/v1/movies",
     tags=["movies"],
     # Authentication
-    dependencies=[Depends(basic_authentication)],
+    # dependencies=[Depends(basic_authentication)],
 )
 
 
@@ -77,7 +77,7 @@ async def post_create_movie(
 async def get_movie_by_id(
     movie_id: str,
     db: MovieRepository = Depends(movie_database),
-    _=Depends(basic_authentication),
+    _: Token = Depends(jwt_authentication),
 ):
     movie = await db.get_by_id(movie_id)
     if not movie:

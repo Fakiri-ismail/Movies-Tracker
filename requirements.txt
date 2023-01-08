@@ -4,3 +4,4 @@ pydantic==1.10.2
 motor==3.1.1
 prometheus-client==0.15.0
 prometheus-fastapi-instrumentator==5.9.1
+python-jose==3.3.0
