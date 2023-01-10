@@ -5,6 +5,7 @@
 - make fmt [to format code]
 - docker build . -t movie-tracker
 - docker run -p 8000:8000 movie-tracker
+- docker-compose up
 - sudo kill -9 $(sudo lsof -t -i:8000)
 
 ### Documentation
