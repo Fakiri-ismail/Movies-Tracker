@@ -4,4 +4,4 @@ WORKDIR /app
 COPY . .
 RUN pip install -r requirements.txt
 
-ENTRYPOINT python /app/main.py
+CMD uvicorn --host 0.0.0.0 --port 8000 --factory api.api:creat_app
