@@ -5,7 +5,7 @@ from api.handlers.movie import router
 from api.middleware import CustomHeaderMiddleware, PrometheusMiddleware
 
 
-def creat_app():
+def create_app():
     app = FastAPI(docs_url="/")
 
     # CORS Middleware

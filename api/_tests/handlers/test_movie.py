@@ -3,7 +3,7 @@ import functools
 import pytest
 from starlette.testclient import TestClient
 
-from api.api import creat_app
+from api.api import create_app
 from api.entities.movie import Movie
 from api.handlers.movie import movie_database
 from api.repository.movie_memory import MemoryMovieRepository
@@ -18,7 +18,7 @@ def memory_repository_dependency(dependency):
 def client():
     settings: Settings = settings_instance()
     settings.enable_metrics = False
-    return TestClient(app=creat_app())
+    return TestClient(app=create_app())
 
 
 @pytest.mark.asyncio
