@@ -6,9 +6,9 @@
 ### Docker
 - docker exec -it [mongo image name] mongosh
 - docker build . -t movie-tracker
-- docker run -p 8000:8000 movie-tracker
+- docker run -p 8080:8080 movie-tracker
 - docker-compose up
-- sudo kill -9 $(sudo lsof -t -i:8000)
+- sudo kill -9 $(sudo lsof -t -i:8080)
 ### MicroK8
 - microk8s enable registry
 - docker tag movie-tracker:latest localhost:32000/movie-tracker

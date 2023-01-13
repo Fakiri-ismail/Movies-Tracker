@@ -20,10 +20,8 @@ spec:
         image: localhost:32000/movie-tracker
         imagePullPolicy: Always
         ports:
-        - containerPort: 8000
+        - containerPort: 8080
           name: http-web
-
-
 ---
 apiVersion: v1
 kind: Service
@@ -36,5 +34,5 @@ spec:
   ports:
     - name: http
       protocol: TCP
-      port: 8000
+      port: 8080
       targetPort: http-web
