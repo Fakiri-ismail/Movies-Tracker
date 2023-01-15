@@ -2,5 +2,7 @@ format:
 	black .
 	isort -rc .
 	autoflake .
-test:
+tests:
 	pytest .
+generate-docs:
+	pdoc3 --html --force api
