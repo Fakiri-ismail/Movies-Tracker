@@ -46,7 +46,7 @@ kubectl get services
 gunicorn -k uvicorn.workers.UvicornWorker main:create_app
 
 # Run the app with the MyUvicornWorker and two worker
-- gunicorn -k api.workers.MyUvicornWorker -w 2 main:create_app
+gunicorn -k api.workers.MyUvicornWorker -w 2 main:create_app
 ```
 [To understand more](https://nuculabs.dev/2021/05/18/fastapi-uvicorn-logging-in-production/)
 
